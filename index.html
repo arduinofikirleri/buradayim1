@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Buradayım ❤️</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ff4d6d">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/HLYFNzSD/onboarding.jpg">
+
+    <link rel="preload" as="image" href="https://i.ibb.co/HLYFNzSD/onboarding.jpg">
+    <link rel="preload" as="image" href="https://i.ibb.co/FLqNgT9P/kirikkalp1.jpg">
+    <link rel="preload" as="image" href="https://i.ibb.co/S7dSz39f/yalnizlik.jpg">
+    <link rel="preload" as="image" href="https://i.ibb.co/4wqQxSwj/ofke.jpg">
+    <link rel="preload" as="image" href="https://i.ibb.co/93NnKsrY/mutluluk.jpg">
+
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --dark-bg: #1a1a1a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background-color: #f7f7f7;
+            /* Mobil dokunmatik iyileştirmeleri */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* ===== ANİMASYONLAR ===== */
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes boxGrow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4) rotate(5deg); }
+            100% { transform: scale(1.2); }
+        }
+
+        @keyframes breathAnimation {
+            0%, 100% { transform: scale(0.9); background: rgba(255, 255, 255, 0.1); }
+            50% { transform: scale(1.3); background: rgba(255, 255, 255, 0.3); }
+        }
+
+        @keyframes heartBurst {
+            0% { transform: scale(0); opacity: 1; top: 50%; left: 50%; }
+            100% { transform: scale(1.5); opacity: 0; top: var(--y); left: var(--x); }
+        }
+
+        @keyframes punchShake {
+            0% { transform: rotate(0); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(-10deg) scale(1.1); }
+            100% { transform: rotate(0); }
+        }
+
+        @keyframes burnUp {
+            0% { transform: translateY(0); opacity: 1; filter: blur(0); color: #fff; }
+            50% { color: #ff4500; }
+            100% { transform: translateY(-100px); opacity: 0; filter: blur(10px); }
+        }
+
+        /* ===== SAYFA YAPISI ===== */
+        .page { display: none; min-height: 100vh; padding: 60px 20px 20px; text-align: center; box-sizing: border-box; position: relative; }
+        .back { position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(0,0,0,0.2); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+
+        /* ===== ONBOARDING ===== */
+        #onboarding { 
+            height: 100vh; 
+            background: #000 url("https://i.ibb.co/HLYFNzSD/onboarding.jpg") center/cover no-repeat; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            color: white; 
+            text-align: center; 
+            position: relative; 
+        }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .content { position: relative; z-index: 2; padding: 20px; }
+        .btn-start { margin-top: 30px; padding: 15px 40px; border: none; border-radius: 30px; background: var(--primary-pink); color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
+
+        #home { display: none; min-height: 100vh; background: linear-gradient(135deg, #ff9a9e, #fad0c4); text-align: center; }
+        .header { padding: 50px 20px 20px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; max-width: 400px; margin: 0 auto; }
+        .card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; cursor: pointer; color: white; transition: 0.3s; }
+        .card:active { transform: scale(0.95); }
+        .card span { font-size: 40px; margin-bottom: 10px; }
+
+        /* ===== TAKVİM ÖZEL STİLLER ===== */
+        .calendar-nav { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 10px; }
+        .nav-btn { background: #ff4d6d; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        
+        .calendar-card { background: white; margin: 15px auto; padding: 20px; border-radius: 20px; width: 95%; box-shadow: 0 10px 20px rgba(255, 77, 109, 0.1); border-left: 5px solid #ff4d6d; text-align: left; box-sizing: border-box; }
+        
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; background: white; padding: 15px; border-radius: 20px; margin: 5px auto 15px; width: 95%; box-sizing: border-box; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .calendar-day-label { font-size: 10px; font-weight: bold; color: #ff4d6d; text-align: center; margin-bottom: 5px; }
+        .day-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 8px; position: relative; color: #666; cursor: pointer; transition: 0.2s; }
+        .day-cell.today { background: #ff4d6d; color: white !important; font-weight: bold; }
+        .day-cell.special { background: #fff0f3; animation: heartBeat 2s infinite; }
+        .special-icon { position: absolute; font-size: 10px; bottom: 2px; }
+
+        /* ===== ANILAR SİSTEMİ ===== */
+        .memory-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 10px; perspective: 1000px; }
+        .memory-card { width: 100%; aspect-ratio: 1 / 1; perspective: 1000px; transform: rotate(var(--rotation)); cursor: pointer; position: relative; }
+        .memory-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .memory-card.flipped .memory-card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; background: white; padding: 4px; box-sizing: border-box; border-radius: 2px; overflow: hidden; }
+        .card-front img { width: 100%; height: 80%; object-fit: cover; border: 1px solid #eee; }
+        .card-front .caption { font-family: 'Dancing Script', cursive, serif; font-size: 15px; margin-top: 6px; color: #555; font-weight: bold; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 100%; }
+        .card-back { background: #fff0f3; transform: rotateY(180deg); padding: 12px; justify-content: center; }
+        .card-back p { margin: 5px 0; overflow-y: auto; max-height: 120px; }
+
+        /* ===== STATS VE DİĞERLERİ ===== */
+        .piti-message-card { background: #ff4d6d; color: white; margin: 15px auto; padding: 25px; border-radius: 20px; width: 95%; cursor: pointer; transition: transform 0.2s; box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3); box-sizing: border-box; }
+        .piti-message-card:active { transform: scale(0.95); }
+        .stats-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; padding-bottom: 20px; }
+        .stat-box { background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 15px; width: 44%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .stat-val { display: block; font-size: 22px; font-weight: bold; color: #ff4d6d; }
+        .stat-label { font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase; }
+
+        /* ===== DUYGU SAYFALARI ===== */
+        #mutluluk-page { background: #fff url("https://i.ibb.co/93NnKsrY/mutluluk.jpg") center/cover no-repeat; color: white; }
+        #mutluluk-page::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 1; }
+        #mutluluk-page > * { position: relative; z-index: 2; }
+        .gift-box { font-size: 80px; cursor: pointer; transition: 0.5s; display: inline-block; margin: 30px 0; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); }
+        .gift-box.grow { animation: boxGrow 0.6s forwards; }
+        .note-card { background: rgba(255, 255, 255, 0.95); color: #d63384; padding: 20px; border-radius: 20px; margin: 20px auto; max-width: 280px; min-height: 60px; display: none; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 2px solid #ff4d6d; }
+
+        #sinir-page { background: #1a1a1a url("https://i.ibb.co/4wqQxSwj/ofke.jpg") center/cover no-repeat; color: white; }
+        #sinir-page::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1; }
+        #sinir-page > * { position: relative; z-index: 2; }
+        .bag-container { margin: 10px auto; width: 140px; height: 160px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .boxing-bag { font-size: 80px; transition: 0.1s; display: inline-block; transform-origin: top center; }
+        .punch-anim { animation: punchShake 0.3s ease-out; }
+        .fire-box { margin: 15px auto; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); max-width: 300px; backdrop-filter: blur(5px); }
+        .burn-area { width: 100%; background: transparent; border: none; border-bottom: 1px solid #ff4500; color: white; font-family: inherit; font-size: 16px; min-height: 50px; outline: none; resize: none; text-align: center; }
+        .burning-text { animation: burnUp 1.5s forwards; }
+
+        #kirik-kalp-page { background: #200 url("https://i.ibb.co/FLqNgT9P/kirikkalp1.jpg") center/cover no-repeat; color: white; }
+        #kirik-kalp-page::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1; }
+        #kirik-kalp-page > * { position: relative; z-index: 2; }
+
+        #yalnizlik-page { background: #1a1a1a url("https://i.ibb.co/S7dSz39f/yalnizlik.jpg") center/cover no-repeat; color: white; }
+        #yalnizlik-page::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 1; }
+        #yalnizlik-page > * { position: relative; z-index: 2; }
+
+        .touch-area { width: 140px; height: 140px; background-color: rgba(255, 255, 255, 0.15); border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; transition: 0.3s; backdrop-filter: blur(3px); }
+        .touch-area:active { background-color: rgba(255, 77, 109, 0.4); transform: scale(0.95); }
+        .burst-heart { position: absolute; font-size: 20px; pointer-events: none; animation: heartBurst 0.8s ease-out forwards; }
+        .breath-box { margin: 20px auto; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .breath-ring { width: 100%; height: 100%; border-radius: 50%; border: 2px solid white; position: absolute; animation: breathAnimation 8s infinite ease-in-out; }
+        .breath-label { font-weight: bold; font-size: 18px; }
+
+        .scrolling-text-area { min-height: 80px; margin: 10px 20px; font-style: italic; font-size: 16px; line-height: 1.5; display: flex; align-items: center; justify-content: center; transition: opacity 1s; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .line-btn { width: 100%; max-width: 300px; margin: 10px auto; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .action-btn { background: var(--primary-pink); color: white; padding: 15px 30px; border-radius: 25px; border: none; margin: 10px; font-weight: bold; width: 80%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    </style>
+</head>
+
+<body>
+
+<div id="onboarding">
+    <div class="overlay"></div>
+    <div class="content fade-in">
+        <h1>BURADAYIM ❤️</h1>
+        <p>Bu sadece bir uygulama değil… Bizim uygulamamız.</p>
+        <button class="btn-start" onclick="startApp()">BAŞLAYALIM</button>
+    </div>
+</div>
+
+<div id="home" class="fade-in">
+    <div class="header"><h2>Nasıl yardımcı olabilirim Sevgilim?</h2></div>
+    <div class="container">
+        <div class="card" onclick="openPage('hatlar')"><span>❤️</span><p>Duygular</p></div>
+        <div class="card" onclick="openPage('anilar')"><span>📸</span><p>Anılarımız</p></div>
+        <div class="card" onclick="openPage('takvim')"><span>📅</span><p>Takvimimiz</p></div>
+        <div class="card" onclick="openPage('iletisim')"><span>💌</span><p>Bana Ulaş</p></div>
+    </div>
+</div>
+
+<div id="hatlar" class="page fade-in" style="background:var(--dark-bg); color:white;">
+    <div class="back" onclick="backHome()">←</div>
+    <h2>Duygular</h2>
+    <button class="line-btn" onclick="openKirikKalp()">💔 Kırık Kalp Hattı</button>
+    <button class="line-btn" onclick="openYalnizlik()">😢 Yalnızlık Hattı</button>
+    <button class="line-btn" onclick="openSinir()">😡 Sinir Boşaltma Hattı</button>
+    <button class="line-btn" onclick="openMutluluk()">💃 Mutluluk Hattı</button>
+</div>
+
+<div id="mutluluk-page" class="page fade-in">
+    <div class="back" onclick="openPage('hatlar')">←</div>
+    <h2 style="text-shadow: 0 2px 10px #000;">Seni Çok Seviyorummm ❤️</h2>
+    <div id="mutluluk-scrolling-text" class="scrolling-text-area">Sen gülünce dünya güzelleşiyor pıtımm.</div>
+    <div id="gift-box" class="gift-box" onclick="openGift()">🎁</div>
+    <div id="note-card" class="note-card fade-in"></div>
+    <div style="background: rgba(255, 255, 255, 0.2); padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 280px; backdrop-filter: blur(5px);">
+        <audio id="mutlulukAudio" controls style="width: 100%;"><source src="mutluluk_sesi.mp3" type="audio/mpeg"></audio>
+    </div>
+    <button class="action-btn" style="background: #ffca3a; color: #333;" onclick="sendMutlulukMsg()">Mutluluğumu seninle paylaşmak istedim! ✨</button>
+</div>
+
+<div id="sinir-page" class="page fade-in">
+    <div class="back" onclick="openPage('hatlar')">←</div>
+    <h2 style="text-shadow: 0 2px 10px #000;">İçini Dök, Rahatla...</h2>
+    <div id="sinir-scrolling-text" class="scrolling-text-area">Öfkenin seni ele geçirmesine izin verme, ben buradayım.</div>
+    <div class="bag-container" onclick="punchBag()"><span id="bag-icon" class="boxing-bag">🥊</span></div>
+    <div class="fire-box">
+        <textarea id="burn-text" class="burn-area" placeholder="Seni ne kızdırdıysa yaz..."></textarea>
+        <button class="action-btn" style="background: #ff4500; width: 100%; margin: 10px 0 0;" onclick="burnEverything()">Hepsini Yak ⚡</button>
+    </div>
+    <button class="action-btn" onclick="sendSinirMsg()">Konuşmaya ihtiyacım var sevgilim 💌</button>
+</div>
+
+<div id="kirik-kalp-page" class="page fade-in">
+    <div class="back" onclick="openPage('hatlar')">←</div>
+    <div style="font-size: 50px; animation: heartBeat 1.5s infinite ease-in-out; display: inline-block;">❤️</div>
+    <h2>Yanındayım...</h2>
+    <div id="scrolling-text" class="scrolling-text-area">Kalbin ağırlaştığında bil ki ben onu biraz hafifletmek için buradayım.</div>
+    <div class="breath-box"><div class="breath-ring"></div><div id="breathText" class="breath-label">Nefes Al</div></div>
+    <div style="background: rgba(255, 255, 255, 0.2); padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 280px;">
+        <audio id="myAudio" controls style="width: 100%;"><source src="ses_kaydin.mp3" type="audio/mpeg"></audio>
+    </div>
+    <button class="action-btn" onclick="sendHug()">Sana sarılmamı ister misin? 🫂</button>
+</div>
+
+<div id="yalnizlik-page" class="page fade-in">
+    <div class="back" onclick="openPage('hatlar')">←</div>
+    <div style="font-size: 50px; animation: heartBeat 1.5s infinite ease-in-out; display: inline-block; margin-top: 10px;">🤗</div>
+    <h2 style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Asla Yalnız Değilsin...</h2>
+    <div id="yalnizlik-scrolling-text" class="scrolling-text-area">Dünya bazen çok sessiz gelir, ama kalbim hep seninle.</div>
+    <div class="interactive-section">
+        <p style="font-size: 14px; opacity: 0.9;">Hissedemediğinde buraya dokun... ❤️</p>
+        <div id="touch-area" class="touch-area"><span style="font-size: 12px; opacity: 0.8; pointer-events: none; font-weight: bold;">PITI PARMAK</span></div>
+        <p id="touch-counter" style="font-size: 12px; opacity: 0.9;">Toplam Pıtı Parmak: 0</p>
+    </div>
+    <div style="background: rgba(0, 0, 0, 0.4); padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 280px; backdrop-filter: blur(5px);">
+        <audio id="yalnizlikAudio" controls style="width: 100%;"><source src="yalnizlik_sesi.mp3" type="audio/mpeg"></audio>
+    </div>
+    <button class="action-btn" onclick="sendYalnizMsg()">Sana bir sürpriz göndereyim mi? 🎁</button>
+</div>
+
+<div id="anilar" class="page fade-in" style="background:#fff5f7; color:black;">
+    <div class="back" onclick="backHome()" style="background:#eee; color:black;">←</div>
+    <h2 style="color: #ff4d6d;">Zaman Tünelimiz 📸</h2>
+    <div class="memory-grid" id="memory-container"></div>
+</div>
+
+<div id="takvim" class="page fade-in" style="background: linear-gradient(135deg, #fff5f7 0%, #fecfef 100%); color: #4a4a4a; padding-top: 50px;">
+    <div class="back" onclick="backHome()" style="background: rgba(0,0,0,0.1); color: #333;">←</div>
+    <h2 style="color: #ff4d6d; margin: 0 0 10px;">Takvimimiz 📅</h2>
+    <div class="calendar-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
+        <div id="calendar-header" style="font-weight: bold; font-size: 16px; min-width: 120px;"></div>
+        <button class="nav-btn" onclick="changeMonth(1)">❯</button>
+    </div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+    <div class="calendar-card fade-in">
+        <h4 style="margin: 0; color: #d63384; font-size: 14px;">✨ Tarihimizde Bugün</h4>
+        <p id="history-note" style="font-style: italic; margin: 10px 0; font-size: 15px;">Yükleniyor...</p>
+    </div>
+    <div class="piti-message-card" onclick="openPitiModal()">
+        <span style="font-size: 30px;">✉️</span>
+        <p style="margin: 5px 0 0; font-weight: bold; font-size: 14px;">Günün Pıtı Mesajı</p>
+        <small style="opacity: 0.8;">Dokun sevgilim</small>
+    </div>
+    <div class="stats-container">
+        <div class="stat-box"><span class="stat-val" id="days-count">0</span><span class="stat-label">Birlikteyiz</span></div>
+        <div class="stat-box"><span class="stat-val">∞</span><span class="stat-label">Kahkahalarımız</span></div>
+    </div>
+</div>
+
+<div id="piti-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:white; padding:30px; border-radius:25px; width:80%; max-width:300px; text-align:center; position:relative;" class="fade-in">
+        <span style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#999;" onclick="closePitiModal()">×</span>
+        <h3 style="color:#ff4d6d; margin-top:0;">Notun ❤️</h3>
+        <p id="modal-text" style="line-height:1.6; color:#555; font-size: 16px;"></p>
+    </div>
+</div>
+
+<div id="iletisim" class="page fade-in" style="background:#ffe4ec; color:black;">
+    <div class="back" onclick="backHome()">←</div>
+    <h2>Bana Ulaş</h2>
+    <button class="action-btn" onclick="window.open('https://wa.me/905510256326')">WhatsApp'tan Yaz</button>
+</div>
+
+<script>
+    // PWA SERVICE WORKER REGISTRATION
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        // sw.js dosyasını oluşturup aynı dizine yüklemelisiniz
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('PWA Kayıt Başarılı!', reg))
+          .catch(err => console.log('PWA Kayıt Hatası:', err));
+      });
+    }
+
+    // Mobil tazeleme (pull-to-refresh) ve yakınlaştırma engelleme
+    document.addEventListener('touchmove', function(e) {
+        if(e.touches.length > 1) e.preventDefault();
+    }, {passive: false});
+
+    // VERİLER
+    const sentences = ["Kalbin ağırlaştığında bil ki ben onu biraz hafifletmek için buradayım.", "Gözlerin dolduysa korkma, ben o gözyaşlarınında yanındayım pıtımm.", "Şu an uzak olabilirim çiçeğim ama hislerim tam kalbinin yanında.", "İçin sıkıştığında elini kalbine koy, orada beni bulacaksın.", "Kalbin yorulduysa biraz dur sevgilim, ben senin yerine beklerim.", "Bazen dünya ağır gelir… o zaman ben senin hafifliğin olurum.", "Kalbininin sesi kısıldığında ben biraz daha yüksek konuşurum: “Buradayım.”", "Bu yazıyı okurken bile yanında oturuyorum gibi düşün Nisacımm.", "Ve unutma… ne olursa olsun, ben hep “buradayım civcivimm”.", "Şu an belki yanında değilim ama pıtı parmak zamanı. Derin bir nefes al hayatımm."];
+    const yalnizlikSentences = ["Dünya bazen çok büyük ve sessiz gelir, ama bil ki kalbim hep seninle atacak pıtımm.", "Şu an nerede olursan ol, derin bir nefes al... O nefeste sana olan sevgim var pıtım.", "Kendi kendine kaldığını düşündüğünde, gözlerini kapat ve elimi hisset. Oradayım.", "Yalnızlık sadece bir his, gerçek değil. Biz hep 'biziz', unutma çiçeğim.", "Belki yan odada değilim ama bir 'tık' uzağındayım. Bana her an ulaşabilirsin.", "Kalbininin sesi kısıldığında, ben senin için daha yüksek sesle 'Buradayım' derim Nisacımm.", "Gökyüzüne bak... Aynı gökyüzünün altındayız, asla yalnız olamazsın hayatımm.", "Bu sessizlikte, sana olan sevgimin yankısını duyabilirsin. Seni çok seviyorumm civcivimm."];
+    const sinirSentences = ["Öfkenin seni ele geçirmesine izin verme sevgilim, derin bir nefes al.", "Şu an kızgın olabilirsin ama ben senin en huzurlu limanın olmaya geldim.", "Her şeyi yakıp yıkmak istediğinde, gel benim kalbimde dinlen pıtımm.", "Sinirin geçtiğinde yine o güzel gülüşünle bakacaksın bana, biliyorum.", "Dünya seni yormuş olabilir, ama benim kollarım seni hep bekliyor çiçeğim.", "O torbayı benmişim gibi yumruklama ama tüm stresini ona bırak hayatımm.", "Huzur bazen sadece bir tık uzağında... Ben buradayım Nisacımm."];
+    const mutlulukSentences = ["Gülüşün dünyaya güneş gibi doğuyor çiçeğim!", "Bu enerjini hiçbir şeyin bozmasına izin verme pıtımm.", "Sen mutluysan ben bin kat daha mutluyum Nisacımm.", "Bugün harika görünüyorsun, enerjin bana kadar geldi!", "Hayatımdaki en güzel 'iyiki' sensin civcivimm.", "Gülümse sevgilim, çünkü gülümsemek sana çok yakışıyor."];
+    const pitiNotlari = ["Seni pamuğun tüyleri kadar çok seviyorum! ❤️", "Seninle olan her anım benim en büyük ödülüm. 🏆", "Dünyanın en tatlı pıtısı sensin, unutma! 🍭", "Sen mutlu olunca ben de sebepsiz mutlu oluyorum 🫂", "Sen mutluysan dünya biraz daha güzel oluyor ✨", "İyiki hayatımdasın, iyiki varsın, seni çok seviyorum sevgilim. 🌈"];
+
+    const memories = [
+        { title: "Kano - 07.11.2025", img: "https://i.ibb.co/S7ZqFgZd/kano.jpg", note: "O gün giydiğin o mavi kazak ve yüzündeki o masum gülüş... Kalbim ilk orada 'işte o' dedi sevgilim. ❤️", audio: "ilk_bakis.mp3", rotate: "-4deg" },
+        { title: "İlk Sinema - 26.02.2026", img: "https://i.ibb.co/3YGXcM7N/muzegezisi.jpg", note: "Hangi filmi izlediğimizin hiçbir önemi yoktu, çünkü benim tüm dikkatim elini tuttuğum o andaydı. ✨", audio: "sinema_ani.mp3", rotate: "5deg" },
+        { title: "Doğum Günün - 09.01.2026", img: "https://i.ibb.co/bRPHQsH4/dogumgunu.jpg", note: "İyi ki doğdun pıtımm. Senin doğduğun gün benim için en büyük mucize. 🎂", audio: "dogum_gunu_not.mp3", rotate: "-2deg" },
+        { title: "Mutluluk - 19.01.2026", img: "https://i.ibb.co/93NnKsrY/mutluluk.jpg", note: "İyi ki doğdun pıtımm. Senin doğduğun gün benim için en büyük mucize. 🎂", audio: "dogum_gunu_not.mp3", rotate: "-2deg" },
+        { title: "Kütüphane - 29.01.2026", img: "https://i.ibb.co/FLqNgT9P/kirikkalp1.jpg", note: "İyi ki doğdun pıtımm. Senin doğduğun gün benim için en büyük mucize. 🎂", audio: "dogum_gunu_not.mp3", rotate: "-2deg" },
+        { title: "Doğum Günün - 05.01.2026", img: "https://i.ibb.co/HLYFNzSD/onboarding.jpg", note: "İyi ki doğdun pıtımm. Senin doğduğun gün benim için en büyük mucize. 🎂", audio: "dogum_gunu_not.mp3", rotate: "-2deg" }
+    ];
+
+    const tarihimizdeBugun = {
+        "2025-11-07": "İlk görüşmemizin, o heyecan dolu anın yıl dönümü... Hayatımın en güzel günüydü. ❤️",
+        "2025-12-26": "İlk mesajın geldiği o anın yıl dönümü... Her şeyin başladığı o sihirli dakika! ✨",
+        "2025-12-27": "İlk buluşmamızın yıl dönümü! Gözlerine ilk baktığım o anı asla unutamam sevgilim. 🫂",
+        "2026-02-26": "İlk sinema tarihimizin yıl dönümü! Filmi mi izledik yoksa heyecandan birbirimizi mi, belli değil... 🎬",
+        "2026-01-12": "Bugün senin günün pıtımm! İyi ki doğdun, iyi ki benim pıtımm oldun. Dünyanın en güzel çiçeği... 🎂",
+        "2026-03-25": "BİZİM GÜNÜMÜZ! Sevgili olduğumuz, kalplerimizi birleştirdiğimiz o muazzam tarih. Nice yıllara! 💖",
+        "2026-05-10": "Sana ilk çiçeğimi aldığım günün yıl dönümü... Ama asıl çiçek sensin benim hayatımda. 🌹"
+    };
+
+    const pitiMesajlari = ["Bugün çok yorulursan bu pıtıyı hatırla...", "Senin gülüşün benim en sevdiğim manzara...", "Dünyanın en şanslı insanıyım...", "İçindeki o güçlü kadına güven...", "Bugün kendine bir kafe ısmarla...", "Unutma; sen benim en güzel 'iyiki'msin...", "Seninle geçen her saniye...", "Bugün ne olursa olsun, bir pıtı uzağındayım."];
+
+    let bInterval, textInterval, yalnizTextInterval, sinirTextInterval, mutlulukTextInterval;
+    let touchCount = 0;
+    let currentViewDate = new Date(); 
+
+    function startApp() { document.getElementById("onboarding").style.display = "none"; document.getElementById("home").style.display = "block"; }
+
+    function openPage(id) {
+        document.getElementById("home").style.display = "none";
+        document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+        document.getElementById(id).style.display = "block";
+        if(id === 'takvim') { currentViewDate = new Date(); updateStats(); updateHistory(); renderCalendarGrid(); }
+        if(id === 'anilar') { renderMemories(); }
+    }
+
+    function backHome() {
+        document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+        document.getElementById("home").style.display = "block";
+        document.querySelectorAll("audio").forEach(a => a.pause());
+        [textInterval, yalnizTextInterval, sinirTextInterval, mutlulukTextInterval, bInterval].forEach(clearInterval);
+    }
+
+    function renderMemories() {
+        const container = document.getElementById('memory-container');
+        container.innerHTML = '';
+        memories.forEach((mem) => {
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.style.setProperty('--rotation', mem.rotate);
+            card.onclick = function() { this.classList.toggle('flipped'); };
+            
+            card.innerHTML = `
+                <div class="memory-card-inner">
+                    <div class="card-front">
+                        <img src="${mem.img}" alt="Anı">
+                        <div class="caption">${mem.title}</div>
+                    </div>
+                    <div class="card-back">
+                        <p style="font-size:14px; color:#d63384; font-weight:bold;">Notum ❤️</p>
+                        <p style="font-size:16px; color:#444; line-height:1.6; text-align:center;">${mem.note}</p>
+                        ${mem.audio ? `<button onclick="event.stopPropagation(); playMemoryAudio('${mem.audio}')" style="background:#ff4d6d;border:none;color:white;border-radius:50%;width:55px;height:55px;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:block;margin:12px auto 0;">▶️</button>` : ''}
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function playMemoryAudio(file) { const audio = new Audio(file); audio.play(); }
+
+    function updateStats() {
+        const start = new Date("2026-03-25");
+        const today = new Date();
+        const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+        document.getElementById("days-count").innerText = diff < 0 ? 0 : diff;
+    }
+
+    function updateHistory() {
+        const today = new Date();
+        const tMonth = today.getMonth() + 1;
+        const tDay = today.getDate();
+        let foundNote = "";
+        for (const dateStr in tarihimizdeBugun) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            if (m === tMonth && d === tDay) { foundNote = tarihimizdeBugun[dateStr]; break; }
+        }
+        document.getElementById("history-note").innerText = foundNote || "Seni sevmek için harika bir gün! ❤️";
+    }
+
+    function changeMonth(dir) { currentViewDate.setMonth(currentViewDate.getMonth() + dir); renderCalendarGrid(); }
+
+    function renderCalendarGrid() {
+        const grid = document.getElementById('calendar-grid');
+        const header = document.getElementById('calendar-header');
+        grid.innerHTML = '';
+        const viewYear = currentViewDate.getFullYear();
+        const viewMonth = currentViewDate.getMonth();
+        const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+        header.innerText = `${monthNames[viewMonth]} ${viewYear}`;
+        ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'].forEach(l => {
+            const el = document.createElement('div'); el.className = 'calendar-day-label'; el.innerText = l; grid.appendChild(el);
+        });
+        const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        const offset = firstDay === 0 ? 6 : firstDay - 1;
+        for (let i = 0; i < offset; i++) grid.appendChild(document.createElement('div'));
+        for (let d = 1; d <= daysInMonth; d++) {
+            const cell = document.createElement('div'); cell.className = 'day-cell'; cell.innerText = d;
+            const realToday = new Date();
+            if (d === realToday.getDate() && viewMonth === realToday.getMonth() && viewYear === realToday.getFullYear()) cell.classList.add('today');
+            for (const dateStr in tarihimizdeBugun) {
+                const [sy, sm, sd] = dateStr.split('-').map(Number);
+                if (sm === (viewMonth + 1) && sd === d) {
+                    cell.classList.add('special');
+                    const icon = document.createElement('span'); icon.className = 'special-icon'; icon.innerText = '❤️'; cell.appendChild(icon);
+                    cell.onclick = () => { document.getElementById("modal-text").innerText = tarihimizdeBugun[dateStr]; document.getElementById("piti-modal").style.display = "flex"; };
+                }
+            }
+            grid.appendChild(cell);
+        }
+    }
+
+    function openPitiModal() { document.getElementById("modal-text").innerText = pitiMesajlari[Math.floor(Math.random() * pitiMesajlari.length)]; document.getElementById("piti-modal").style.display = "flex"; }
+    function closePitiModal() { document.getElementById("piti-modal").style.display = "none"; }
+    function openKirikKalp() { openPage('kirik-kalp-page'); startBreathCycle(); startTextCycle('scrolling-text', sentences, 'textInterval'); }
+    function openYalnizlik() { openPage('yalnizlik-page'); setupTouchArea(); startTextCycle('yalnizlik-scrolling-text', yalnizlikSentences, 'yalnizTextInterval'); }
+    function openSinir() { openPage('sinir-page'); startTextCycle('sinir-scrolling-text', sinirSentences, 'sinirTextInterval'); }
+    function openMutluluk() { openPage('mutluluk-page'); startTextCycle('mutluluk-scrolling-text', mutlulukSentences, 'mutlulukTextInterval'); }
+    function openGift() { const box = document.getElementById('gift-box'); const card = document.getElementById('note-card'); box.classList.add('grow'); setTimeout(() => { box.innerText = "🎈"; card.innerText = pitiNotlari[Math.floor(Math.random() * pitiNotlari.length)]; card.style.display = "flex"; }, 600); }
+    function punchBag() { const bag = document.getElementById('bag-icon'); bag.classList.add('punch-anim'); setTimeout(() => bag.classList.remove('punch-anim'), 300); }
+    function burnEverything() { const area = document.getElementById('burn-text'); if(!area.value) return; area.classList.add('burning-text'); setTimeout(() => { area.value = ""; area.classList.remove('burning-text'); alert("Kül oldu gitti... ❤️"); }, 1500); }
+
+    function startTextCycle(id, arr, intName) {
+        const el = document.getElementById(id); let i = 0; if(window[intName]) clearInterval(window[intName]);
+        window[intName] = setInterval(() => { el.style.opacity = 0; setTimeout(() => { i = (i + 1) % arr.length; el.innerText = arr[i]; el.style.opacity = 1; }, 1000); }, 5000);
+    }
+    function startBreathCycle() { const el = document.getElementById('breathText'); let s = true; bInterval = setInterval(() => { el.innerText = s ? "Nefes Ver" : "Nefes Al"; s = !s; }, 4000); }
+    function setupTouchArea() { const ta = document.getElementById('touch-area'); const ce = document.getElementById('touch-counter'); ta.onclick = (e) => { createHeartBurst(e, ta); touchCount++; ce.innerText = `Toplam Pıtı Parmak: ${touchCount}`; }; }
+    function createHeartBurst(e, container) {
+        const rect = container.getBoundingClientRect();
+        const xb = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+        const yb = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+        for (let i = 0; i < 6; i++) {
+            const h = document.createElement('span'); h.innerHTML = '❤️'; h.className = 'burst-heart';
+            h.style.setProperty('--x', `${Math.random() * 200 - 100}px`); h.style.setProperty('--y', `${Math.random() * 200 - 100}px`);
+            h.style.left = xb + 'px'; h.style.top = yb + 'px'; container.appendChild(h); setTimeout(() => h.remove(), 800);
+        }
+    }
+
+    function sendHug() { window.open(`https://wa.me/905510256326?text=${encodeURIComponent("Sevgilim, sana sarılmamı ister misin? ❤️")}`); }
+    function sendYalnizMsg() { window.open(`https://wa.me/905510256326?text=${encodeURIComponent("Pıtımm, şu an biraz yalnız hissediyorum...❤️")}`); }
+    function sendSinirMsg() { window.open(`https://wa.me/905510256326?text=${encodeURIComponent("Pıtımm, biraz doluyum... ❤️")}`); }
+    function sendMutlulukMsg() { window.open(`https://wa.me/905510256326?text=${encodeURIComponent("Canımm, bugün çok mutluyum! ✨❤️")}`); }
+</script>
+
+</body>
+</html>

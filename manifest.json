@@ -1,0 +1,20 @@
+{
+  "name": "Buradayım",
+  "short_name": "Buradayım",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#ff4d6d",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/HLYFNzSD/onboarding.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg"
+    },
+    {
+      "src": "https://i.ibb.co/HLYFNzSD/onboarding.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ]
+}
