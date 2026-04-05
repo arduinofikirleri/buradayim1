@@ -2,7 +2,7 @@ const CACHE_NAME = 'buradayim-v1';
 const assets = [
   '/',
   '/index.html',
-  'https://i.ibb.co/HLYFNzSD/onboarding.jpg',
+  'https://i.ibb.co/q36qzY8S/anasayfa.jpg',
   'https://i.ibb.co/FLqNgT9P/kirikkalp1.jpg'
 ];
 
